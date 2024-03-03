@@ -2,10 +2,9 @@ package com.bestind.ShirpoTripAPI.controller;
 
 import com.bestind.ShirpoTripAPI.entity.LoginUserRequest;
 import com.bestind.ShirpoTripAPI.entity.RegisterUserRequest;
-import com.bestind.ShirpoTripAPI.repository.UserRepository;
 import com.bestind.ShirpoTripAPI.service.UserService;
+import com.bestind.ShirpoTripAPI.exception.user.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,20 +20,17 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity loginUser(@RequestBody LoginUserRequest loginUserRequest) {
-        try {
-            return ResponseEntity.ok().body(userService.loginUser(loginUserRequest));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Not ok");
-        }
+    public ResponseEntity loginUser(@RequestBody LoginUserRequest loginUserRequest) throws UserException {
+        return ResponseEntity.ok().body(userService.loginUser(loginUserRequest));
     }
 
     @PostMapping
-    public ResponseEntity registerUser(@RequestBody RegisterUserRequest registerUserRequest) {
-        try {
-            return ResponseEntity.ok().body(userService.registerUser(registerUserRequest));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Not ok");
-        }
+    public ResponseEntity registerUser(@RequestBody RegisterUserRequest registerUserRequest) throws UserException {
+        return ResponseEntity.ok().body(userService.registerUser(registerUserRequest));
+    }
+
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity handleException(UserException e) {
+        return e.returnError();
     }
 }
