@@ -25,9 +25,8 @@ public class PlaceController {
 
     @PostMapping
     public ResponseEntity postPlace(@RequestBody PlaceRequest placeRequest) throws PlaceExistException {
-        PlaceRequest createdPlace = new PlaceRequest();
 
-        if (DuplicateException(placeRequest)) {
+        if (duplicateException(placeRequest)) {
             throw new PlaceExistException("Got exception");
         }
 
@@ -36,7 +35,7 @@ public class PlaceController {
 
     }
 
-    private boolean DuplicateException(PlaceRequest placeRequest) {
+    private boolean duplicateException(PlaceRequest placeRequest) {
         // проверка на дубль
         return false;
     }
