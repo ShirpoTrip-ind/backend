@@ -1,14 +1,32 @@
 package com.bestind.ShirpoTripAPI.config;
 
-import com.bestind.ShirpoTripAPI.repository.UserRepository;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
-@EnableMongoRepositories(basePackages="com.concretepage.mongodb")
 public class MongoConfig {
 
-    @Autowired
-    UserRepository userRepo;
+    @Value("${spring.data.mongodb.host}")
+    private String mongoHost;
+
+    @Value("${spring.data.mongodb.port}")
+    private int mongoPort;
+
+    @Value("${spring.data.mongodb.database}")
+    private String mongoDatabase;
+
+    @Bean
+    MongoClient mongoClient() {
+        return MongoClients.create();
+    }
+
+    @Bean
+    MongoTemplate mongoTemplate(MongoClient mongoClient) {
+        return new MongoTemplate(mongoClient, "testdb");
+    }
 }

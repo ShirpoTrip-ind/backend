@@ -1,20 +1,18 @@
-package com.bestind.ShirpoTripAPI.model;
+package com.bestind.ShirpoTripAPI.entity;
 
 import jakarta.persistence.Entity;
 import lombok.Value;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
-@Document
-@Value
 @Entity
-public class User {
+@Value
+public class RegisterUserRequest {
     @Id
-    ObjectId _id;
-    String userId;
+    ObjectId _id = new ObjectId();
+    String userId = String.valueOf(UUID.randomUUID());
     String password;
     String login;
 }

@@ -19,8 +19,6 @@ import java.lang.annotation.Target;
 @interface Nullable {
 }
 
-
-
 enum RelaxType {
     Active,
     Passive
