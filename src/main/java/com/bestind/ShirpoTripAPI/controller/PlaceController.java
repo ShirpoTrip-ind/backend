@@ -1,16 +1,18 @@
 package com.bestind.ShirpoTripAPI.controller;
 
-import org.springframework.http.HttpStatusCode;
+import com.bestind.ShirpoTripAPI.exception.PlaceExistException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.bestind.ShirpoTripAPI.repository.PlaceRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/place")
 public class PlaceController {
+
+    @Autowired
+    private PlaceRepository placeRepo;
 
     @GetMapping
     public ResponseEntity getPlace() {
@@ -22,14 +24,26 @@ public class PlaceController {
     }
 
     @PostMapping
-    public ResponseEntity postPlace(@RequestBody Place place) {
-        Place createdPlace = new Place();
-        try {
-            return ResponseEntity.status(HttpStatusCode.CREATED).body(createdPlace);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Not ok");
-        } catch (CustomException e) { //проверка на дублирование
-            return ResponseEntity.conflict().bodyMessage(e.getMessage());
+    public ResponseEntity postPlace(@RequestBody PlaceRequest placeRequest) throws PlaceExistException {
+        PlaceRequest createdPlace = new PlaceRequest();
+
+        if (DuplicateException(placeRequest)) {
+            throw new PlaceExistException("Got exception");
         }
+
+        PlaceRequest createdPlace = new PlaceRequest();
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPlace);
+
     }
+
+    private boolean DuplicateException(PlaceRequest placeRequest) {
+        // проверка на дубль
+        return false;
+    }
+
+    @ExceptionHandler(PlaceExistException.class)
+    public ResponseEntity handleException(PlaceExistException e) {
+        return new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
+    }
+
 }
