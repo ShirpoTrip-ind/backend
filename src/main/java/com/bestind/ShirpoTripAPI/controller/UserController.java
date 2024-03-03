@@ -19,7 +19,7 @@ public class UserController {
         try {
             return ResponseEntity.ok().body("All ok");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Not ok");
+            return ResponseEntity.badRequest().body("not ok");
         }
     }
 }
