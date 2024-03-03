@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.bestind'
 version = '0.0.1-SNAPSHOT'
-распишии
+
 java {
 	sourceCompatibility = '21'
 }

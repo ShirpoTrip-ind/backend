@@ -1,9 +1,24 @@
 package com.bestind.ShirpoTripAPI.model;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+@interface Nullable {
+}
+
 
 
 enum RelaxType {
@@ -17,21 +32,29 @@ enum RelaxType {
 
 public class Place {
     String place_id;
+
+    @EqualsAndHashCode.Include
     String title;
+
     String description;
     String feedback;
     Optional<Integer> visitor_age;
+
+    @EqualsAndHashCode.Include
     Optional<URL> url;
+
     Optional<Float> average_price;
+    @EqualsAndHashCode.Include
+
     String location;
     RelaxType relaxType;
     List<String> tags;
     Optional<String> contact_info;
-    Optional<DateTimeFormatter> schedule;
+    Optional<ZonedDateTime> schedule;
 
     public Place(String title, String description, String feedback,
-                 Integer visitor_age, URL url, Float average_price, String location,
-                 RelaxType relaxType, List<String> tags, String contact_info, DateTimeFormatter schedule) {
+                 @Nullable Integer visitor_age, @Nullable URL url, @Nullable Float average_price, String location,
+                 RelaxType relaxType, List<String> tags, @Nullable String contact_info, @Nullable ZonedDateTime schedule) {
 
         this.place_id = getPlace_id();
         this.title = title;
