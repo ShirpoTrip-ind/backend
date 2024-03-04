@@ -19,15 +19,15 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepo;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper mapper;
 
     @Autowired
     MongoTemplate mongoTemplate;
 
     @Autowired
-    public UserService(UserRepository userRepo, ObjectMapper objectMapper) {
+    public UserService(UserRepository userRepo, ObjectMapper mapper) {
         this.userRepo = userRepo;
-        this.objectMapper = objectMapper;
+        this.mapper = mapper;
     }
 
     public String loginUser(LoginUserRequest loginUserRequest) throws UserException {
@@ -40,7 +40,7 @@ public class UserService {
             if (user.isEmpty())
                 throw new UserNotFoundException();
 
-            return objectMapper.writeValueAsString(user);
+            return mapper.writeValueAsString(user.get());
         } catch (JsonProcessingException e) {
             throw new UserBadRequestException();
         }
@@ -48,13 +48,13 @@ public class UserService {
 
     public String registerUser(RegisterUserRequest registerUserRequest) throws UserException {
         try {
-            final User user = objectMapper.readValue(objectMapper.writeValueAsString(registerUserRequest), User.class);
+            final User user = mapper.readValue(mapper.writeValueAsString(registerUserRequest), User.class);
 
             if (userRepo.findUser(user.getLogin(), user.getPassword()).isPresent())
                 throw new UserAlreadyExistsException();
 
             userRepo.insert(user);
-            return objectMapper.writeValueAsString(user);
+            return mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
             throw new UserBadRequestException();
         }

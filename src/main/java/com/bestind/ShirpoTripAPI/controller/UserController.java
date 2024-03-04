@@ -2,6 +2,7 @@ package com.bestind.ShirpoTripAPI.controller;
 
 import com.bestind.ShirpoTripAPI.entity.LoginUserRequest;
 import com.bestind.ShirpoTripAPI.entity.RegisterUserRequest;
+import com.bestind.ShirpoTripAPI.exception.user.UserBadRequestException;
 import com.bestind.ShirpoTripAPI.service.UserService;
 import com.bestind.ShirpoTripAPI.exception.user.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,12 @@ public class UserController {
         return ResponseEntity.ok().body(userService.registerUser(registerUserRequest));
     }
 
-    @ExceptionHandler(UserException.class)
+    @ExceptionHandler({UserException.class, Exception.class})
     public ResponseEntity handleException(UserException e) {
-        return e.returnError();
+        try {
+            return e.returnError();
+        } catch (Exception exc) {
+            return new UserBadRequestException().returnError();
+        }
     }
 }
