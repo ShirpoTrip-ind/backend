@@ -2,7 +2,6 @@ package com.bestind.ShirpoTripAPI.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.net.URL;
@@ -10,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-public class UserEntity {
+public class PlaceEntity {
     String place_id;
     String title;
     String description;
@@ -24,9 +23,9 @@ public class UserEntity {
     Optional<String> contact_info;
     Optional<DateTimeFormatter> schedule;
 
-    UserEntity(String place_id, String title, String description, String feedback, Optional<Integer> visitor_age,
-               Optional<URL> url, Optional<Float> average_price, String location, String relaxType, List<String> tags,
-               Optional<String> contact_info, Optional<DateTimeFormatter> schedule) {
+    PlaceEntity(String place_id, String title, String description, String feedback, Optional<Integer> visitor_age,
+                Optional<URL> url, Optional<Float> average_price, String location, String relaxType, List<String> tags,
+                Optional<String> contact_info, Optional<DateTimeFormatter> schedule) {
         this.place_id = place_id;
         this.title = title;
         this.description = description;
@@ -47,21 +46,9 @@ public class UserEntity {
         return objectMapper.writeValueAsString(this);
     }
 
-    static UserEntity fromJson(String json) throws JsonProcessingException {
+    static PlaceEntity fromJson(String json) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        return objectMapper.readValue(json, UserEntity.class);
+        return objectMapper.readValue(json, PlaceEntity.class);
     }
-
-    /*
-    @Override
-            public String toString() {
-            try {
-                    return this.toJson();
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-        }
-     */
 }
