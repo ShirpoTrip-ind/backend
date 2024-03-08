@@ -1,10 +1,17 @@
 package com.bestind.ShirpoTripAPI.repository;
 
-import com.bestind.ShirpoTripAPI.entity.PlaceEntity;
+import com.bestind.ShirpoTripAPI.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
-@Component
-public interface UserRepository extends MongoRepository<PlaceEntity, String> {
+@Repository
+public interface UserRepository extends MongoRepository<User, Integer> {
 
+    @Query("{login : ?0, password : ?1}")
+    Optional<User> findUser(String login, String password);
 }
+
+
+
