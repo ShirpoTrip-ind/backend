@@ -25,30 +25,46 @@ public class Place {
     }
 }
 
-public class PlaceRepository {
+public interface PlaceRepository {
+    void addPlace(Place place);
+
+    List<Place> getPlaces();
+
+    Place getPlace(String placeId);
+}
+
+public class PlaceRepositoryImpl implements PlaceRepository {
     private final MongoCollection<Document> collection;
+    private final Gson gson = new Gson();
 
-    public PlaceRepository() {
-        MongoDatabase database = MongoClients.create().getDatabase("your_database_name");
-        this.collection = database.getCollection("places_collection");
+    public PlaceRepositoryImpl(String databaseName, String collectionName) {
+        MongoDatabase database = MongoClients.create().getDatabase(databaseName);
+        this.collection = database.getCollection(collectionName);
     }
 
+    @Override
     public void addPlace(Place place) {
-        collection.insertOne(Document.parse(place.toJson()));
+        Document doc = new Document("placeId", place.getPlaceId())
+                .append("name", place.getName())
+                .append("address", place.getAddress());
+        collection.insertOne(doc);
     }
 
+    @Override
     public List<Place> getPlaces() {
         List<Place> places = new ArrayList<>();
         for (Document doc : collection.find()) {
-            places.add(new Place(doc.toJson()));
+            Place place = gson.fromJson(doc.toJson(), Place.class);
+            places.add(place);
         }
         return places;
     }
 
+    @Override
     public Place getPlace(String placeId) {
         Document doc = collection.find(new Document("placeId", placeId)).first();
         if (doc != null) {
-            return new Place(doc.toJson());
+            return gson.fromJson(doc.toJson(), Place.class);
         }
         return null;
     }
