@@ -1,32 +1,25 @@
 package com.bestind.ShirpoTripAPI.model;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 @interface Nullable {
 }
 
-enum RelaxType {
-    Active,
-    Passive
-}
-//все три аннотации должны реализовать все методы get и set автоматически, + реализоватьэквивалентность по всем полям
 @EqualsAndHashCode
 @Getter
-@Setter
 
 public class Place {
     String place_id;
@@ -42,9 +35,10 @@ public class Place {
     Optional<URL> url;
 
     Optional<Float> average_price;
-    @EqualsAndHashCode.Include
 
+    @EqualsAndHashCode.Include
     String location;
+
     RelaxType relaxType;
     List<String> tags;
     Optional<String> contact_info;
