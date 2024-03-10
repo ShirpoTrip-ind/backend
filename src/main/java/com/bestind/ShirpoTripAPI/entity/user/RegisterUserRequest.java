@@ -1,4 +1,4 @@
-package com.bestind.ShirpoTripAPI.entity;
+package com.bestind.ShirpoTripAPI.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;

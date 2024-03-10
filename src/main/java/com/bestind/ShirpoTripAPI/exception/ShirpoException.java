@@ -1,13 +1,13 @@
-package com.bestind.ShirpoTripAPI.exception.user;
+package com.bestind.ShirpoTripAPI.exception;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
-public abstract class UserException extends Exception {
+public abstract class ShirpoException extends Exception {
     private final HttpStatusCode statusCode;
     private final String message;
 
-    public UserException(HttpStatusCode statusCode, String message) {
+    public ShirpoException(HttpStatusCode statusCode, String message) {
         this.statusCode = statusCode;
         this.message = message;
     }
