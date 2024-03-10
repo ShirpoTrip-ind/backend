@@ -1,11 +1,13 @@
 package com.bestind.ShirpoTripAPI.service;
 
 import com.bestind.ShirpoTripAPI.entity.place.PostPlaceRequest;
+import com.bestind.ShirpoTripAPI.entity.place.PutPlaceRequest;
 import com.bestind.ShirpoTripAPI.exception.ShirpoException;
 import com.bestind.ShirpoTripAPI.exception.internal.MongoCrashException;
 import com.bestind.ShirpoTripAPI.exception.internal.PizdecException;
 import com.bestind.ShirpoTripAPI.exception.place.PlaceBadRequestException;
 import com.bestind.ShirpoTripAPI.exception.place.PlaceExistsException;
+import com.bestind.ShirpoTripAPI.exception.place.PlaceNotFoundException;
 import com.bestind.ShirpoTripAPI.model.Place;
 import com.bestind.ShirpoTripAPI.repository.PlaceRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.MongoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class PlaceService {
@@ -71,5 +74,23 @@ public class PlaceService {
         } catch (Exception e) {
             throw new PizdecException();
         }
+    }
+
+    public String putPlace(PutPlaceRequest putPlaceRequest) throws ShirpoException {
+        try {
+            Place updatedPlace = mapper.readValue(mapper.writeValueAsString(putPlaceRequest), Place.class);
+
+            if (placeRepository.findPlace(putPlaceRequest.getPlaceId()) == null)
+                throw new PlaceNotFoundException();
+
+            return mapper.writeValueAsString(updatedPlace);
+
+        } catch (JsonProcessingException e) {
+            throw new PlaceBadRequestException();
+        } catch (MongoException e) {
+            throw new MongoCrashException();
+        } catch (Exception e) {
+            throw new PizdecException();
+    }
     }
 }
