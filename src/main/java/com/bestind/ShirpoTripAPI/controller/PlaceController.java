@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/place")
+@CrossOrigin
 public class PlaceController {
     private final PlaceService placeService;
 

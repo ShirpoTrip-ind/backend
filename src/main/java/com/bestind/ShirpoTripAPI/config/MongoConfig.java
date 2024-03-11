@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 public class MongoConfig {
     @Bean
     MongoClient mongoClient() {
-        return MongoClients.create();
+        return MongoClients.create("mongodb://mongodb:27017/shirpotrip_mongodb");
     }
 
     @Bean
