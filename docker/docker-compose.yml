@@ -12,7 +12,5 @@ services:
     #restart: always
     ports:
       - 8080:8080
-    links:
-      - mongodb:app_db
     depends_on:
       - mongodb
