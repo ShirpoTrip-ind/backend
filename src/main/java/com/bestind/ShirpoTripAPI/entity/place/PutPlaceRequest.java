@@ -1,40 +1,22 @@
-package com.bestind.ShirpoTripAPI.model;
+package com.bestind.ShirpoTripAPI.entity.place;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.Entity;
 import lombok.*;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.net.URL;
 import java.util.List;
-enum RelaxType {
-    @JsonProperty("active")
-    Active,
-    @JsonProperty("passive")
-    Passive,
-    @JsonProperty("any")
-    Any
-}
-//все три аннотации должны реализовать все методы get и set автоматически, + реализоватьэквивалентность по всем полям
-@EqualsAndHashCode
+
+@EqualsAndHashCode(callSuper = false)
 @Getter
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+@JsonTypeName("place")
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-@JsonTypeName("place")
-@Document(collection = "place")
-public class Place {
-    @Id
-    @JsonIgnore
-    @NonNull
-    ObjectId _id;
-
+public class PutPlaceRequest {
     @NonNull
     @JsonProperty("place_id")
     String placeId;
@@ -54,6 +36,7 @@ public class Place {
     @JsonProperty("visitor_age")
     Integer visitorAge;
 
+    @NonNull
     @JsonProperty("child")
     boolean child;
 
@@ -85,4 +68,13 @@ public class Place {
 
     @JsonProperty("schedule_to")
     String scheduleTo;
+
+    enum RelaxType {
+        @JsonProperty("active")
+        Active,
+        @JsonProperty("passive")
+        Passive,
+        @JsonProperty("any")
+        Any
+    }
 }

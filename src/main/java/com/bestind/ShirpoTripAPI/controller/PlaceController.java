@@ -1,6 +1,7 @@
 package com.bestind.ShirpoTripAPI.controller;
 
 import com.bestind.ShirpoTripAPI.entity.place.PostPlaceRequest;
+import com.bestind.ShirpoTripAPI.entity.place.PutPlaceRequest;
 import com.bestind.ShirpoTripAPI.exception.ShirpoException;
 import com.bestind.ShirpoTripAPI.exception.place.PlaceBadRequestException;
 import com.bestind.ShirpoTripAPI.service.PlaceService;
@@ -27,6 +28,11 @@ public class PlaceController {
     @PostMapping
     public ResponseEntity postPlace(@RequestBody PostPlaceRequest placeRequest) throws ShirpoException {
         return ResponseEntity.ok().body(placeService.postPlace(placeRequest));
+    }
+
+    @PutMapping
+    public ResponseEntity putPlace(@RequestBody PutPlaceRequest putplaceRequest) throws ShirpoException {
+        return ResponseEntity.ok().body(placeService.putPlace(putplaceRequest));
     }
 
     @ExceptionHandler({ShirpoException.class, Exception.class})
