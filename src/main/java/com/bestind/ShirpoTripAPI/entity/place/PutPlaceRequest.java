@@ -1,17 +1,13 @@
 package com.bestind.ShirpoTripAPI.entity.place;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.Entity;
 import lombok.*;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 
 import java.net.URL;
 import java.util.List;
-import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = false)
 @Getter
@@ -21,14 +17,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 public class PutPlaceRequest {
-    @Id
-    @JsonIgnore
-    @NonNull
-    ObjectId _id = new ObjectId();;
-
     @NonNull
     @JsonProperty("place_id")
-    String placeId = String.valueOf(UUID.randomUUID());
+    String placeId;
 
     @NonNull
     @EqualsAndHashCode.Include

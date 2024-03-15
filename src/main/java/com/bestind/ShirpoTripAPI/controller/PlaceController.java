@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/place")
+@CrossOrigin
 public class PlaceController {
     private final PlaceService placeService;
 
@@ -29,14 +30,17 @@ public class PlaceController {
     public ResponseEntity postPlace(@RequestBody PostPlaceRequest placeRequest) throws ShirpoException {
         return ResponseEntity.ok().body(placeService.postPlace(placeRequest));
     }
+
     @PutMapping
     public ResponseEntity putPlace(@RequestBody PutPlaceRequest putplaceRequest) throws ShirpoException {
         return ResponseEntity.ok().body(placeService.putPlace(putplaceRequest));
     }
+  
     @DeleteMapping
     public ResponseEntity deletePlace(@RequestBody DeletePlaceRequest deletePlaceRequest) throws ShirpoException {
         return ResponseEntity.ok().body(placeService.deletePlace(deletePlaceRequest));
     }
+  
     @ExceptionHandler({ShirpoException.class, Exception.class})
     public ResponseEntity handleException(ShirpoException e) {
         try {

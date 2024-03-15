@@ -1,5 +1,9 @@
 package com.bestind.ShirpoTripAPI.model;
-import com.fasterxml.jackson.annotation.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.Entity;
 import lombok.*;
 import org.bson.types.ObjectId;
@@ -7,9 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.net.URL;
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 enum RelaxType {
     @JsonProperty("active")
     Active,
