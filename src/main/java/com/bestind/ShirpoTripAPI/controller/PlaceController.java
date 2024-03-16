@@ -1,6 +1,5 @@
 package com.bestind.ShirpoTripAPI.controller;
 
-import com.bestind.ShirpoTripAPI.entity.place.DeletePlaceRequest;
 import com.bestind.ShirpoTripAPI.entity.place.PostPlaceRequest;
 import com.bestind.ShirpoTripAPI.entity.place.PutPlaceRequest;
 import com.bestind.ShirpoTripAPI.exception.ShirpoException;
