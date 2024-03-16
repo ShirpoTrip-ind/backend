@@ -1,5 +1,6 @@
 package com.bestind.ShirpoTripAPI.service;
 
+import com.bestind.ShirpoTripAPI.entity.place.DeletePlaceRequest;
 import com.bestind.ShirpoTripAPI.entity.place.PostPlaceRequest;
 import com.bestind.ShirpoTripAPI.entity.place.PutPlaceRequest;
 import com.bestind.ShirpoTripAPI.exception.ShirpoException;
@@ -24,16 +25,14 @@ import java.util.Objects;
 public class PlaceService {
     private final PlaceRepository placeRepository;
     private final ObjectMapper mapper;
-
     @Autowired
     PlaceService(
-        PlaceRepository placeRepository,
-        ObjectMapper objectMapper
+            PlaceRepository placeRepository,
+            ObjectMapper objectMapper
     ) {
         this.placeRepository = placeRepository;
         this.mapper = objectMapper;
     }
-
     public String getPlaces() throws ShirpoException {
         try {
             return mapper.writeValueAsString(placeRepository.findAll());
@@ -45,7 +44,6 @@ public class PlaceService {
             throw new PizdecException();
         }
     }
-
     public String getPlace(String placeId) throws ShirpoException {
         try {
             return mapper.writeValueAsString(placeRepository.findPlace(placeId));
@@ -57,7 +55,6 @@ public class PlaceService {
             throw new PizdecException();
         }
     }
-
     public String postPlace(PostPlaceRequest postPlaceRequest) throws ShirpoException {
         try {
             System.out.println(mapper.writeValueAsString(postPlaceRequest));
@@ -116,6 +113,22 @@ public class PlaceService {
             throw new PlaceIdNotEqualsException();
         } catch (Exception e) {
             throw new PizdecException();
+        }
     }
+
+    public String deletePlace(DeletePlaceRequest deletePlaceRequest) throws ShirpoException {
+        try {
+            if (placeRepository.findPlace(deletePlaceRequest.getPlaceId()) == null) {
+                throw new PlaceNotFoundException();
+            } else {
+                placeRepository.deletePlace(deletePlaceRequest.getPlaceId());
+            }
+            return "Ok";
+        } catch (PlaceNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new PizdecException();
+        }
+
     }
 }

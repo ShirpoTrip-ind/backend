@@ -22,7 +22,8 @@ enum RelaxType {
 public interface PlaceRepository extends MongoRepository<Place, String> {
     @Query("{placeId: ?0}")
     Place findPlace(String placeId);
-
+    @Query("{placeId: ?0}")
+    void deletePlace(String placeId);
     @Query("{title: ?0}")
     List<Place> findSame(String title);
 
