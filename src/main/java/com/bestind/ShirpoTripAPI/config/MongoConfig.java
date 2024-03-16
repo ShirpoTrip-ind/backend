@@ -6,18 +6,13 @@ import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
-import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
-
 @Configuration
 public class MongoConfig {
-    String connectionString = "mongodb://S7&*kewJHD674Bvdtgw^Lcsd*&jdcbSUHWxa$$9:564^8^ftgdaPE4wt2$23eС!dg2&^dq87^F&Sudbq@80.76.60.28:27017";
+    String connectionString = "mongodb://AYUd65aef78BYVndug45SAFbuw8dwYG78JBSV267:MbvtVYvyt4516789IJhsyfSBUihysfqwYF6s78st7@80.76.60.28:27017";
     ServerApi serverApi = ServerApi.builder()
             .version(ServerApiVersion.V1)
             .build();

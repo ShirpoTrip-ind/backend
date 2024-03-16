@@ -32,8 +32,11 @@ public class PlaceController {
     }
 
     @PutMapping
-    public ResponseEntity putPlace(@RequestBody PutPlaceRequest putplaceRequest) throws ShirpoException {
-        return ResponseEntity.ok().body(placeService.putPlace(putplaceRequest));
+    public ResponseEntity putPlace(
+            @RequestParam(name = "place_id") String placeId,
+            @RequestBody PutPlaceRequest putplaceRequest
+            ) throws ShirpoException {
+        return ResponseEntity.ok().body(placeService.putPlace(placeId, putplaceRequest));
     }
   
     @DeleteMapping
