@@ -21,7 +21,7 @@ public class PlaceController {
     }
 
     @GetMapping
-    public ResponseEntity getPlace(@RequestParam String placeId) throws ShirpoException {
+    public ResponseEntity getPlace(@RequestParam(name = "place_id") String placeId) throws ShirpoException {
         return ResponseEntity.ok().body(placeService.getPlace(placeId));
     }
 
