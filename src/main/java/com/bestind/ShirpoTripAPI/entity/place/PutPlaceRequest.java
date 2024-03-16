@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.Entity;
 import lombok.*;
 
+import com.bestind.ShirpoTripAPI.model.enums.RelaxType;
+
 import java.net.URL;
 import java.util.List;
 
@@ -68,13 +70,4 @@ public class PutPlaceRequest {
 
     @JsonProperty("schedule_to")
     String scheduleTo;
-
-    enum RelaxType {
-        @JsonProperty("active")
-        Active,
-        @JsonProperty("passive")
-        Passive,
-        @JsonProperty("any")
-        Any
-    }
 }

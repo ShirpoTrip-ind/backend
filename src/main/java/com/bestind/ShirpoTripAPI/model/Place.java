@@ -1,5 +1,6 @@
 package com.bestind.ShirpoTripAPI.model;
 
+import com.bestind.ShirpoTripAPI.model.enums.RelaxType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -12,14 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.net.URL;
 import java.util.List;
-enum RelaxType {
-    @JsonProperty("active")
-    Active,
-    @JsonProperty("passive")
-    Passive,
-    @JsonProperty("any")
-    Any
-}
+
 //все три аннотации должны реализовать все методы get и set автоматически, + реализоватьэквивалентность по всем полям
 @EqualsAndHashCode
 @Getter

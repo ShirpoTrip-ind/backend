@@ -79,12 +79,30 @@ public class PlaceService {
     public String putPlace(PutPlaceRequest putPlaceRequest) throws ShirpoException {
         try {
             Place updatedPlace = mapper.readValue(mapper.writeValueAsString(putPlaceRequest), Place.class);
-
-            if (placeRepository.findPlace(putPlaceRequest.getPlaceId()) == null)
+            final Place oldPlace = placeRepository.findPlace(putPlaceRequest.getPlaceId());
+            if (oldPlace == null)
                 throw new PlaceNotFoundException();
 
-            return mapper.writeValueAsString(updatedPlace);
+            final Place newPlace = new Place(
+                    oldPlace.get_id(),
+                    oldPlace.getPlaceId(),
+                    putPlaceRequest.getTitle(),
+                    putPlaceRequest.getDescription(),
+                    putPlaceRequest.getFeedback(),
+                    putPlaceRequest.getVisitorAge(),
+                    putPlaceRequest.isChild(),
+                    putPlaceRequest.getUrl(),
+                    putPlaceRequest.getAveragePrice(),
+                    putPlaceRequest.getLocation(),
+                    putPlaceRequest.getRelaxType(),
+                    putPlaceRequest.getTags(),
+                    putPlaceRequest.getContactInfo(),
+                    putPlaceRequest.getScheduleFrom(),
+                    putPlaceRequest.getScheduleTo()
+            );
 
+            placeRepository.save(newPlace);
+            return mapper.writeValueAsString(updatedPlace);
         } catch (JsonProcessingException e) {
             throw new PlaceBadRequestException();
         } catch (MongoException e) {
