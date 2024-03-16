@@ -1,15 +1,15 @@
-package com.bestind.ShirpoTripAPI.entity.place;
+package com.bestind.ShirpoTripAPI.telega.entity;
+
 import com.bestind.ShirpoTripAPI.model.enums.RelaxType;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.Entity;
 import lombok.*;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 
 import java.net.URL;
 import java.util.List;
-import java.util.UUID;
-//все три аннотации должны реализовать все методы get и set автоматически, + реализоватьэквивалентность по всем полям
+
 @EqualsAndHashCode(callSuper = false)
 @Getter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
@@ -17,15 +17,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class PostPlaceRequest {
-    @Id
-    @JsonIgnore
-    @NonNull
-    ObjectId _id = new ObjectId();
-
+public class PutPlaceTgRequest {
     @NonNull
     @JsonProperty("place_id")
-    String placeId = String.valueOf(UUID.randomUUID());
+    String placeId;
 
     @NonNull
     @EqualsAndHashCode.Include

@@ -1,6 +1,5 @@
-package com.bestind.ShirpoTripAPI.service;
+package com.bestind.ShirpoTripAPI.telega.service;
 
-import com.bestind.ShirpoTripAPI.entity.place.PostPlaceRequest;
 import com.bestind.ShirpoTripAPI.entity.place.PutPlaceRequest;
 import com.bestind.ShirpoTripAPI.exception.ShirpoException;
 import com.bestind.ShirpoTripAPI.exception.internal.MongoCrashException;
@@ -10,7 +9,10 @@ import com.bestind.ShirpoTripAPI.exception.place.PlaceExistsException;
 import com.bestind.ShirpoTripAPI.exception.place.PlaceIdNotEqualsException;
 import com.bestind.ShirpoTripAPI.exception.place.PlaceNotFoundException;
 import com.bestind.ShirpoTripAPI.model.Place;
-import com.bestind.ShirpoTripAPI.repository.PlaceRepository;
+import com.bestind.ShirpoTripAPI.telega.entity.PostPlaceTgRequest;
+import com.bestind.ShirpoTripAPI.telega.entity.PutPlaceTgRequest;
+import com.bestind.ShirpoTripAPI.telega.model.PlaceTg;
+import com.bestind.ShirpoTripAPI.telega.repository.PlaceTgRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.MongoException;
@@ -21,20 +23,20 @@ import java.util.Objects;
 
 
 @Service
-public class PlaceService {
-    private final PlaceRepository placeRepository;
+public class PlaceTgService {
+    private final PlaceTgRepository placeTgRepository;
     private final ObjectMapper mapper;
     @Autowired
-    PlaceService(
-            PlaceRepository placeRepository,
+    PlaceTgService(
+            PlaceTgRepository placeTgRepository,
             ObjectMapper objectMapper
     ) {
-        this.placeRepository = placeRepository;
+        this.placeTgRepository = placeTgRepository;
         this.mapper = objectMapper;
     }
     public String getPlaces() throws ShirpoException {
         try {
-            return mapper.writeValueAsString(placeRepository.findAll());
+            return mapper.writeValueAsString(placeTgRepository.findAll());
         } catch (JsonProcessingException e) {
             throw new PlaceBadRequestException();
         } catch (MongoException e) {
@@ -43,26 +45,17 @@ public class PlaceService {
             throw new PizdecException();
         }
     }
-    public String getPlace(String placeId) throws ShirpoException {
+
+    public String postPlace(PostPlaceTgRequest postPlaceTgRequest) throws ShirpoException {
         try {
-            return mapper.writeValueAsString(placeRepository.findPlace(placeId));
-        } catch (JsonProcessingException e) {
-            throw new PlaceBadRequestException();
-        } catch (MongoException e) {
-            throw new MongoCrashException();
-        } catch (Exception e) {
-            throw new PizdecException();
-        }
-    }
-    public String postPlace(PostPlaceRequest postPlaceRequest) throws ShirpoException {
-        try {
-            System.out.println(mapper.writeValueAsString(postPlaceRequest));
-            Place place = mapper.readValue(mapper.writeValueAsString(postPlaceRequest), Place.class);
-            if (!placeRepository.findSame(place.getTitle()).isEmpty()) {
+            System.out.println(mapper.writeValueAsString(postPlaceTgRequest));
+            PlaceTg placeTg = mapper.readValue(mapper.writeValueAsString(postPlaceTgRequest), PlaceTg.class);
+            if (!placeTgRepository.findSame(placeTg.getTitle()).isEmpty()) {
+                var f = placeTgRepository.findSame(placeTg.getTitle());
                 throw new PlaceExistsException();
             }
-            placeRepository.insert(place);
-            return mapper.writeValueAsString(place);
+            placeTgRepository.insert(placeTg);
+            return mapper.writeValueAsString(placeTg);
         } catch (PlaceExistsException e) {
             throw e;
         } catch (JsonProcessingException e) {
@@ -74,16 +67,32 @@ public class PlaceService {
         }
     }
 
-    public String putPlace(String placeId, PutPlaceRequest putPlaceRequest) throws ShirpoException {
+    public String deletePlace(String placeId) throws ShirpoException {
         try {
-            Place updatedPlace = mapper.readValue(mapper.writeValueAsString(putPlaceRequest), Place.class);
+            final PlaceTg placeTg = placeTgRepository.findPlace(placeId);
+            if (placeTg == null)
+                throw new PlaceNotFoundException();
+            placeTgRepository.delete(placeTg);
+            return "OK";
+        } catch (PlaceNotFoundException e) {
+            throw e;
+        } catch (MongoException e) {
+            throw new MongoCrashException();
+        } catch (Exception e) {
+            throw new PizdecException();
+        }
+    }
+
+    public String putPlace(String placeId, PutPlaceTgRequest putPlaceRequest) throws ShirpoException {
+        try {
+            PlaceTg updatedPlace = mapper.readValue(mapper.writeValueAsString(putPlaceRequest), PlaceTg.class);
             if (!Objects.equals(placeId, putPlaceRequest.getPlaceId()))
                 throw new PlaceIdNotEqualsException();
-            final Place oldPlace = placeRepository.findPlace(placeId);
+            final PlaceTg oldPlace = placeTgRepository.findPlace(placeId);
             if (oldPlace == null)
                 throw new PlaceNotFoundException();
 
-            final Place newPlace = new Place(
+            final PlaceTg newPlace = new PlaceTg(
                     oldPlace.get_id(),
                     placeId,
                     putPlaceRequest.getTitle(),
@@ -101,7 +110,7 @@ public class PlaceService {
                     putPlaceRequest.getScheduleTo()
             );
 
-            placeRepository.save(newPlace);
+            placeTgRepository.save(newPlace);
             return mapper.writeValueAsString(updatedPlace);
         } catch (JsonProcessingException e) {
             throw new PlaceBadRequestException();
@@ -109,22 +118,6 @@ public class PlaceService {
             throw new MongoCrashException();
         } catch (PlaceIdNotEqualsException e) {
             throw e;
-        } catch (Exception e) {
-            throw new PizdecException();
-        }
-    }
-
-    public String deletePlace(String placeId) throws ShirpoException {
-        try {
-            final Place place = placeRepository.findPlace(placeId);
-            if (place == null)
-                throw new PlaceNotFoundException();
-            placeRepository.delete(place);
-            return "OK";
-        } catch (PlaceNotFoundException e) {
-            throw e;
-        } catch (MongoException e) {
-            throw new MongoCrashException();
         } catch (Exception e) {
             throw new PizdecException();
         }
