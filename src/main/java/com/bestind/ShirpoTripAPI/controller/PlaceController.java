@@ -40,8 +40,8 @@ public class PlaceController {
     }
   
     @DeleteMapping
-    public ResponseEntity deletePlace(@RequestBody DeletePlaceRequest deletePlaceRequest) throws ShirpoException {
-        return ResponseEntity.ok().body(placeService.deletePlace(deletePlaceRequest));
+    public ResponseEntity deletePlace(@RequestParam(name = "place_id") String placeId) throws ShirpoException {
+        return ResponseEntity.ok().body(placeService.deletePlace(placeId));
     }
   
     @ExceptionHandler({ShirpoException.class, Exception.class})

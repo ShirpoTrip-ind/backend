@@ -66,7 +66,7 @@ public class PlaceService {
             placeRepository.insert(place);
             return mapper.writeValueAsString(place);
         } catch (PlaceExistsException e) {
-            throw new PlaceExistsException();
+            throw e;
         } catch (JsonProcessingException e) {
             throw new PlaceBadRequestException();
         } catch (MongoException e) {
@@ -110,25 +110,25 @@ public class PlaceService {
         } catch (MongoException e) {
             throw new MongoCrashException();
         } catch (PlaceIdNotEqualsException e) {
-            throw new PlaceIdNotEqualsException();
+            throw e;
         } catch (Exception e) {
             throw new PizdecException();
         }
     }
 
-    public String deletePlace(DeletePlaceRequest deletePlaceRequest) throws ShirpoException {
+    public String deletePlace(String placeId) throws ShirpoException {
         try {
-            if (placeRepository.findPlace(deletePlaceRequest.getPlaceId()) == null) {
+            final Place place = placeRepository.findPlace(placeId);
+            if (place == null)
                 throw new PlaceNotFoundException();
-            } else {
-                placeRepository.deletePlace(deletePlaceRequest.getPlaceId());
-            }
-            return "Ok";
+            placeRepository.delete(place);
+            return "OK";
         } catch (PlaceNotFoundException e) {
             throw e;
+        } catch (MongoException e) {
+            throw new MongoCrashException();
         } catch (Exception e) {
             throw new PizdecException();
         }
-
     }
 }
