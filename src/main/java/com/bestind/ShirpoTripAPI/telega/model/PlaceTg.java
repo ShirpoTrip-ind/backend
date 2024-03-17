@@ -11,7 +11,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.net.URL;
 import java.util.List;
 
 //все три аннотации должны реализовать все методы get и set автоматически, + реализоватьэквивалентность по всем полям
@@ -53,7 +52,7 @@ public class PlaceTg {
 
     @EqualsAndHashCode.Include
     @JsonProperty("url")
-    URL url;
+    String url;
 
     @JsonProperty("average_price")
     Float averagePrice;

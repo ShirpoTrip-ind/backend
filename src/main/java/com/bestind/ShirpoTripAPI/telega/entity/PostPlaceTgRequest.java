@@ -50,7 +50,7 @@ public class PostPlaceTgRequest {
 
     @EqualsAndHashCode.Include
     @JsonProperty("url")
-    URL url;
+    String url;
 
     @JsonProperty("average_price")
     Float averagePrice;
