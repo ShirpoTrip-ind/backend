@@ -34,7 +34,7 @@ public class UserService {
 
     public String loginUser(LoginUserRequest loginUserRequest) throws ShirpoException {
         try {
-            fileLogger.trace("User wants to enter the system");
+            fileLogger.trace("{} wants to enter the system", mapper.writeValueAsString(loginUserRequest));
             final Optional<User> user = userRepo.findUser(
                     loginUserRequest.getLogin(),
                     loginUserRequest.getPassword()
@@ -51,14 +51,14 @@ public class UserService {
             fileLogger.error("Mongo crashed in loginUser");
             throw new MongoCrashException();
         } catch (Exception e) {
-            fileLogger.warn("Something went wrong while entering");
+            fileLogger.error("Something went wrong while entering");
             throw new PizdecException();
         }
     }
 
     public String registerUser(RegisterUserRequest registerUserRequest) throws ShirpoException {
         try {
-            fileLogger.trace("User wants to register in the system");
+            fileLogger.trace("{} wants to register in the system", mapper.writeValueAsString(registerUserRequest));
             final User user = mapper.readValue(mapper.writeValueAsString(registerUserRequest), User.class);
 
             if (userRepo.findUser(user.getLogin(), user.getPassword()).isPresent())
@@ -76,7 +76,7 @@ public class UserService {
             fileLogger.error("Mongo crashed in registerUser");
             throw new MongoCrashException();
         } catch (Exception e) {
-            fileLogger.warn("Something went wrong while registering");
+            fileLogger.error("Something went wrong while registering");
             throw new PizdecException();
         }
     }

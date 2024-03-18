@@ -46,7 +46,7 @@ public class PlaceService {
             fileLogger.error("Mongo crashed in getPlaces");
             throw new MongoCrashException();
         } catch (Exception e) {
-            fileLogger.warn("Something went wrong in getPlaces");
+            fileLogger.error("Something went wrong in getPlaces");
             throw new PizdecException();
         }
     }
@@ -61,13 +61,13 @@ public class PlaceService {
             fileLogger.error("Mongo crashed in getPlace");
             throw new MongoCrashException();
         } catch (Exception e) {
-            fileLogger.warn("Something went wrong in getPlace");
+            fileLogger.error("Something went wrong in getPlace");
             throw new PizdecException();
         }
     }
     public String postPlace(PostPlaceRequest postPlaceRequest) throws ShirpoException {
         try {
-            fileLogger.trace("Posting place");
+            fileLogger.trace(mapper.writeValueAsString(postPlaceRequest), "Posting place");
             System.out.println(mapper.writeValueAsString(postPlaceRequest));
             Place place = mapper.readValue(mapper.writeValueAsString(postPlaceRequest), Place.class);
             if (!placeRepository.findSame(place.getTitle()).isEmpty()) {
@@ -86,14 +86,14 @@ public class PlaceService {
             fileLogger.error("Mongo crashed in postPlace");
             throw new MongoCrashException();
         } catch (Exception e) {
-            fileLogger.warn("Something went wrong in postPlace");
+            fileLogger.error("Something went wrong in postPlace");
             throw new PizdecException();
         }
     }
 
     public String putPlace(String placeId, PutPlaceRequest putPlaceRequest) throws ShirpoException {
         try {
-            fileLogger.trace("Putting place");
+            fileLogger.trace(mapper.writeValueAsString(putPlaceRequest), "Putting place");
             Place updatedPlace = mapper.readValue(mapper.writeValueAsString(putPlaceRequest), Place.class);
             if (!Objects.equals(placeId, putPlaceRequest.getPlaceId()))
                 throw new PlaceIdNotEqualsException();
@@ -131,14 +131,14 @@ public class PlaceService {
             fileLogger.error("Different Id while putting place");
             throw e;
         } catch (Exception e) {
-            fileLogger.warn("Something went wrong in putPlace");
+            fileLogger.error("Something went wrong in putPlace");
             throw new PizdecException();
         }
     }
 
     public String deletePlace(String placeId) throws ShirpoException {
         try {
-            fileLogger.trace("Deleting place");
+            fileLogger.trace("Deleting place with id = {}", placeId);
             final Place place = placeRepository.findPlace(placeId);
             if (place == null)
                 throw new PlaceNotFoundException();
@@ -151,7 +151,7 @@ public class PlaceService {
             fileLogger.error("Mongo crashed in deletePlace");
             throw new MongoCrashException();
         } catch (Exception e) {
-            fileLogger.warn("Something went wrong in deletePlace");
+            fileLogger.error("Something went wrong in deletePlace");
             throw new PizdecException();
         }
     }
