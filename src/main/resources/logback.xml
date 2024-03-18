@@ -1,0 +1,58 @@
+<configuration>
+    <appender name="FILE_INFO" class="ch.qos.logback.core.FileAppender">
+        <file>src/main/java/com/bestind/ShirpoTripAPI/logging/AppStagesLogger.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <appender name="FILE_TRACE" class="ch.qos.logback.core.FileAppender">
+        <file>src/main/java/com/bestind/ShirpoTripAPI/logging/FunctionalityLogger.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.FileAppender">
+        <file>src/main/java/com/bestind/ShirpoTripAPI/logging/ErrorLogger.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <logger name="com.example.package1" level="INFO" additivity="false">
+        <appender-ref ref="FILE_INFO"/>
+    </logger>
+
+    <logger name="com.example.package2" level="TRACE" additivity="false">
+        <appender-ref ref="FILE_TRACE"/>
+    </logger>
+
+    <logger name="com.example.package3" level="ERROR" additivity="false">
+        <appender-ref ref="FILE_ERROR"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="FILE_INFO"/>
+    </root>
+
+    <root level="TRACE">
+        <appender-ref ref="FILE_TRACE"/>
+    </root>
+</configuration>

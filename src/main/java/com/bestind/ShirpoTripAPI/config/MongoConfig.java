@@ -6,12 +6,15 @@ import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
 public class MongoConfig {
+    private static final Logger fileLogger = LoggerFactory.getLogger(MongoConfig.class);
     String connectionString = "mongodb://AYUd65aef78BYVndug45SAFbuw8dwYG78JBSV267:MbvtVYvyt4516789IJhsyfSBUihysfqwYF6s78st7@80.76.60.28:27017";
     ServerApi serverApi = ServerApi.builder()
             .version(ServerApiVersion.V1)
@@ -27,6 +30,7 @@ public class MongoConfig {
 
     @Bean
     MongoTemplate mongoTemplate(MongoClient mongoClient) {
+        fileLogger.info("Connected to database");
         return new MongoTemplate(mongoClient, "shirpotrip");
     }
 }
