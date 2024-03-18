@@ -1,6 +1,4 @@
-package com.bestind.ShirpoTripAPI.ChatGpt;
-
-import lombok.Data;
+package com.bestind.ShirpoTripAPI.chatgpt;
 
 import java.util.ArrayList;
 import java.util.List;
