@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+import static com.bestind.ShirpoTripAPI.extension.ExtensionToPlace.PutRequestToPlace;
+
 
 @Service
 public class PlaceService {
@@ -83,23 +85,7 @@ public class PlaceService {
             if (oldPlace == null)
                 throw new PlaceNotFoundException();
 
-            final Place newPlace = new Place(
-                    oldPlace.get_id(),
-                    placeId,
-                    putPlaceRequest.getTitle(),
-                    putPlaceRequest.getDescription(),
-                    putPlaceRequest.getFeedback(),
-                    putPlaceRequest.getVisitorAge(),
-                    putPlaceRequest.isChild(),
-                    putPlaceRequest.getUrl(),
-                    putPlaceRequest.getAveragePrice(),
-                    putPlaceRequest.getLocation(),
-                    putPlaceRequest.getRelaxType(),
-                    putPlaceRequest.getTags(),
-                    putPlaceRequest.getContactInfo(),
-                    putPlaceRequest.getScheduleFrom(),
-                    putPlaceRequest.getScheduleTo()
-            );
+            final Place newPlace = PutRequestToPlace(oldPlace.get_id(), placeId, putPlaceRequest);
 
             placeRepository.save(newPlace);
             return mapper.writeValueAsString(updatedPlace);
