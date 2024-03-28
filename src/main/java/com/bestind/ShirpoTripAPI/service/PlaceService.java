@@ -71,7 +71,6 @@ public class PlaceService {
             System.out.println(mapper.writeValueAsString(postPlaceRequest));
             Place place = mapper.readValue(mapper.writeValueAsString(postPlaceRequest), Place.class);
             if (!placeRepository.findSame(place.getTitle()).isEmpty()) {
-                var f = placeRepository.findSame(place.getTitle());
                 throw new PlaceExistsException();
             }
             placeRepository.insert(place);

@@ -7,6 +7,4 @@ spring.data.mongodb.database=shirpotrip_mongodb
 logging.level.org.springframework=INFO
 logging.file.name=shirpotrip-api-logs.log
 logging.file.path=.
-database.mongo.scheme=test
-
-openai.api.key=key
+database.mongo.scheme=prod
