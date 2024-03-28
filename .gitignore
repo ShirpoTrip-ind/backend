@@ -38,3 +38,6 @@ out/
 
 ### BOTANIC INDUSTRIES ###
 shirpotrip-api-logs*
+
+### Logs ###
+src/main/java/com/bestind/ShirpoTripAPI/logging
